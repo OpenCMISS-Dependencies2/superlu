@@ -2,6 +2,7 @@
 #ifndef SUPERLU_CONFIG_H
 #define SUPERLU_CONFIG_H
 
+#define HAVE_METIS TRUE
 
 
 
