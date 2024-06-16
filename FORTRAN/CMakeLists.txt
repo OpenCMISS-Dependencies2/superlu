@@ -1,6 +1,6 @@
 # include the paths for header files
+include_directories(${CMAKE_BINARY_DIR}/FORTRAN)
 include_directories(${SuperLU_SOURCE_DIR}/SRC)
-include_directories(${SuperLU_BINARY_DIR}/FORTRAN)
 
 # build examples for target "all" only if enable_examples is set
 if(NOT enable_examples)
@@ -31,8 +31,6 @@ set_target_properties(superlu_fortran-static PROPERTIES SOVERSION ${superlu_sove
 target_link_libraries(superlu_fortran-static superlu)
 
 # depends on FPP defs
-add_dependencies(superlu_fortran config_f)
-add_dependencies(superlu_fortran-static config_f)
 add_dependencies(superlu_fortran-static superlu_fortran)
 
 install(TARGETS superlu_fortran
@@ -52,7 +50,7 @@ install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
   FILES_MATCHING PATTERN *.mod
   )
-install(FILES superlu_config.fh
+install(FILES ${CMAKE_BINARY_DIR}/FORTRAN/superlu_config.fh
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
   )
 
@@ -91,11 +89,9 @@ if(enable_examples)
 endif() # enable_example
 
 # Format superlu_config.fh from superlu_config.h in C
-add_custom_command(
-  OUTPUT superlu_config.fh
-  COMMAND sed;'/^\\//;d';<;superlu_config.h;>;temp.fh
-  COMMAND sed;'/typedef/;d';<;temp.fh;>;superlu_config.fh
-  COMMAND cp;superlu_config.fh;${SuperLU_SOURCE_DIR}/FORTRAN/.
-  WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/FORTRAN
-)
-add_custom_target(config_f DEPENDS superlu_config.fh)
+file(READ "${CMAKE_BINARY_DIR}/SRC/superlu_config.h" CONFIG_FILE_H)
+# remove C comments /* */
+string(REGEX REPLACE "/\\*[^(\\*/)]*\\*/" " " CONFIG_FILE_H_NO_COMMENTS "${CONFIG_FILE_H}")
+# remove typedefs
+string(REGEX REPLACE "typedef[^;]*;" " " CONFIG_FILE_FH "${CONFIG_FILE_H_NO_COMMENTS}")
+file(WRITE "${CMAKE_BINARY_DIR}/FORTRAN/superlu_config.fh" "${CONFIG_FILE_FH}")
