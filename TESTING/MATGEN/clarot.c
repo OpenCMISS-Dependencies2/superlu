@@ -18,9 +18,6 @@ int clarot_slu(bool *lrows, bool *lleft, bool *lright,
     int i__1, i__2, i__3, i__4;
     singlecomplex q__1, q__2, q__3, q__4, q__5, q__6;
 
-    /* Builtin functions */
-    void r_cnjg(singlecomplex *, singlecomplex *);
-
     /* Local variables */
     static int iinc, j, inext;
     static singlecomplex tempx;
@@ -41,7 +38,7 @@ int clarot_slu(bool *lrows, bool *lleft, bool *lright,
 
        CLAROT applies a (Givens) rotation to two adjacent rows or   
        columns, where one element of the first and/or last column/row   
-       may be a separate variable.  This is specifically indended   
+       may be a separate variable.  This is specifically intended   
        for use on matrices stored in some format other than GE, so   
        that elements of the matrix may be used or modified for which   
        no array element is provided.   

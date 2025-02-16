@@ -16,7 +16,7 @@ at the top-level directory.
  * August, 2011
  */
 
-/*! @file sitersol.c
+/*! \file
  * \brief Example #1 showing how to use ILU to precondition GMRES
  *
  * This example shows that ILU is computed from the equilibrated matrix,
@@ -38,7 +38,6 @@ at the top-level directory.
  * \ingroup Example
  */
 
-#include <unistd.h>
 #include "slu_sdefs.h"
 
 superlu_options_t *GLOBAL_OPTIONS;
@@ -89,7 +88,7 @@ void spsolve(int n, float x[], float y[])
 
 
 /*!
- * \brief Performs matrix-vector multipliation sp_sgemv with original matrix A.
+ * \brief Performs matrix-vector multiplication sp_sgemv with original matrix A.
  *
  * The operations is y := alpha*A*x + beta*y. See documentation of sp_sgemv
  * for further details.

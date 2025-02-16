@@ -16,7 +16,7 @@ at the top-level directory.
  * August, 2011
  */
 
-/*! @file ditersol1.c
+/*! \file
  * \brief Example #2 showing how to use ILU to precondition GMRES
  *
  * This example shows that ILU is computed from the equilibrated matrix,
@@ -88,7 +88,7 @@ void dpsolve(int n, double x[], double y[])
 }
 
 /*!
- * \brief Performs matrix-vector multipliation sp_dgemv with original matrix A.
+ * \brief Performs matrix-vector multiplication sp_dgemv with original matrix A.
  *
  * The operations is y := alpha*A*x + beta*y. See documentation of sp_dgemv
  * for further details.

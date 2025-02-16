@@ -13,14 +13,15 @@ at the top-level directory.
  * \brief Header file for real operations
  * 
  * <pre> 
- * -- SuperLU routine (version 4.1) --
+ * -- SuperLU routine (version 7.0.0) --
  * Univ. of California Berkeley, Xerox Palo Alto Research Center,
  * and Lawrence Berkeley National Lab.
  * November, 2010
+ * August 2024
  * 
  * Global data structures used in LU factorization -
  * 
- *   nsuper: #supernodes = nsuper + 1, numbered [0, nsuper].
+ *   nsuper: \#supernodes = nsuper + 1, numbered [0, nsuper].
  *   (xsup,supno): supno[i] is the supernode no to which i belongs;
  *	xsup(s) points to the beginning of the s-th supernode.
  *	e.g.   supno 0 1 2 2 3 3 3 4 4 4 4 4   (n=12)
@@ -54,7 +55,7 @@ at the top-level directory.
  *	values.
  *
  *	The last column structures (for pruning) will be removed
- *	after the numercial LU factorization phase.
+ *	after the numerical LU factorization phase.
  *
  *   (xlusup,lusup): lusup[*] contains the numerical values of the
  *	rectangular supernodes; xlusup[j] points to the starting
@@ -174,7 +175,7 @@ extern void    dreadmt (int *, int *, int_t *, double **, int_t **, int_t **);
 extern void    dGenXtrue (int, int, double *, int);
 extern void    dFillRHS (trans_t, int, double *, int, SuperMatrix *,
 			  SuperMatrix *);
-extern void    dgstrs (trans_t, SuperMatrix *, SuperMatrix *, int *, int *,
+extern void    dgstrs (trans_t, SuperMatrix *, SuperMatrix *, const int *, const int *,
                         SuperMatrix *, SuperLUStat_t*, int *);
 /* ILU */
 extern void    dgsitrf (superlu_options_t*, SuperMatrix*, int, int, int*,
@@ -255,7 +256,7 @@ extern void    dPrint_CompCol_Matrix(char *, SuperMatrix *);
 extern void    dPrint_SuperNode_Matrix(char *, SuperMatrix *);
 extern void    dPrint_Dense_Matrix(char *, SuperMatrix *);
 extern void    dprint_lu_col(char *, int, int, int_t *, GlobalLU_t *);
-extern int     print_double_vec(char *, int, double *);
+extern int     print_double_vec(const char *, int, const double *);
 extern void    dcheck_tempv(int, double *);
 
 /*! \brief BLAS */

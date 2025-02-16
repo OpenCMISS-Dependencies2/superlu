@@ -40,7 +40,7 @@ extern int genmmd_(int *neqns, int_t *xadj, int_t *adjncy,
  * \param[out] perm_c Column permutation vector.
  */
 void get_colamd(const int m, const int n, const int_t nnz,
-                int_t *colptr, int_t *rowind, int *perm_c)
+                const int_t *colptr, const int_t *rowind, int *perm_c)
 {
     size_t Alen;
     int_t *A, i, *p;
@@ -151,7 +151,7 @@ void get_metis(int n, int_t bnz, int_t *b_colptr,
  * \param[out] ata_colptr column pointer of size n+1 for matrix A'*A.
  * \param[out] ata_rowind row indices of size atanz for matrix A'*A.
  */
-void getata(const int m, const int n, const int_t nz, int_t *colptr, int_t *rowind,
+void getata(const int m, const int n, const int_t nz, const int_t *colptr, const int_t *rowind,
             int_t *atanz, int_t **ata_colptr, int_t **ata_rowind)
 {
     register int_t i, j, k, col, num_nz, ti, trow;
@@ -280,7 +280,7 @@ void getata(const int m, const int n, const int_t nz, int_t *colptr, int_t *rowi
  * \param[out] b_colptr column pointer of size n+1 for matrix A'+A.
  * \param[out] b_rowind row indices of size bnz for matrix A'+A.
  */
-void at_plus_a(const int n, const int_t nz, int_t *colptr, int_t *rowind,
+void at_plus_a(const int n, const int_t nz, const int_t *colptr, const int_t *rowind,
                int_t *bnz, int_t **b_colptr, int_t **b_rowind)
 {
     register int_t i, j, k, col, num_nz;
@@ -471,7 +471,7 @@ get_perm_c(int ispec, SuperMatrix *A, int *perm_c)
 #endif
 	return;
 #ifdef HAVE_METIS
-        case METIS_ATA: /* METIS ordering on A'*A */
+    case METIS_ATA: /* METIS ordering on A'*A */
 	    getata(m, n, Astore->nnz, Astore->colptr, Astore->rowind,
 		     &bnz, &b_colptr, &b_rowind);
 
@@ -487,6 +487,23 @@ get_perm_c(int ispec, SuperMatrix *A, int *perm_c)
 	    printf(".. Use METIS ordering on A'*A\n");
 #endif
 	    return;
+    case METIS_AT_PLUS_A: /* METIS ordering on A'*A */
+	if ( m != n ) ABORT("Matrix is not square");
+	at_plus_a(n, Astore->nnz, Astore->colptr, Astore->rowind,
+		  &bnz, &b_colptr, &b_rowind);
+
+        if ( bnz ) { /* non-empty adjacency structure */
+	    get_metis(n, bnz, b_colptr, b_rowind, perm_c);
+        } else { /* e.g., diagonal matrix */
+	    for (i = 0; i < n; ++i) perm_c[i] = i;
+		SUPERLU_FREE(b_colptr);
+	    /* b_rowind is not allocated in this case */
+	}
+
+#if ( PRNTlevel>=1 )
+	printf(".. Use METIS ordering on A'+A\n");
+#endif
+	return;
 #endif
 	
     default:

@@ -20,10 +20,6 @@ static int c__1 = 1;
     int a_dim1, a_offset, i__1, i__2, i__3;
     doublecomplex z__1, z__2;
 
-    /* Builtin functions */
-    double z_abs(doublecomplex *);
-    void d_cnjg(doublecomplex *, doublecomplex *);
-
     /* Local variables */
     static int kbeg, jcol;
     static double xabs;
@@ -101,7 +97,7 @@ static int c__1 = 1;
              columns will be orthogonal, the remaining columns being   
              zero.   
              For matrices where M > N, just use the previous   
-             explaination, interchanging 'L' and 'R' and "rows" and   
+             explanation, interchanging 'L' and 'R' and "rows" and   
              "columns".   
 
              Not modified.   

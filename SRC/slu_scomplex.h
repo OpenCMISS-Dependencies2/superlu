@@ -30,7 +30,6 @@ at the top-level directory.
 
 typedef struct { float r, i; } singlecomplex;
 
-#define complex singlecomplex  // backward compatibility
 
 /* Macro definitions */
 
@@ -69,7 +68,7 @@ extern "C" {
 #endif
 
 /* Prototypes for functions in scomplex.c */
-void c_div(singlecomplex *, singlecomplex *, singlecomplex *);
+void c_div(singlecomplex *, const singlecomplex *, const singlecomplex *);
 double c_abs(singlecomplex *);     /* exact */
 double c_abs1(singlecomplex *);    /* approximate */
 void c_exp(singlecomplex *, singlecomplex *);

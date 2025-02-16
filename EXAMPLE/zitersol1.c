@@ -16,7 +16,7 @@ at the top-level directory.
  * August, 2011
  */
 
-/*! @file zitersol1.c
+/*! \file
  * \brief Example #2 showing how to use ILU to precondition GMRES
  *
  * This example shows that ILU is computed from the equilibrated matrix,
@@ -88,7 +88,7 @@ void zpsolve(int n, doublecomplex x[], doublecomplex y[])
 }
 
 /*!
- * \brief Performs matrix-vector multipliation sp_zgemv with original matrix A.
+ * \brief Performs matrix-vector multiplication sp_zgemv with original matrix A.
  *
  * The operations is y := alpha*A*x + beta*y. See documentation of sp_zgemv
  * for further details.

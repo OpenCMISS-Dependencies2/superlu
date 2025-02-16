@@ -10,10 +10,11 @@ at the top-level directory.
 */
 
 /*
- * -- SuperLU routine (version 3.0) --
+ * -- SuperLU routine (version 7.0.0) --
  * Univ. of California Berkeley, Xerox Palo Alto Research Center,
  * and Lawrence Berkeley National Lab.
  * October 15, 2003
+ * August 2024
  *
  */
 
@@ -80,7 +81,7 @@ int main(int argc, char *argv[])
     int            nfact, ifact, itran;
     int            kl, ku, mode, lda, ioff;
     int            zerot; /* indicate whether the matrix is singular */
-    int            izero; /* incidate the first column that is entirely zero */
+    int            izero; /* indicate the first column that is entirely zero */
     double         u;
     float         anorm, cndnum;
     float         *Afull;

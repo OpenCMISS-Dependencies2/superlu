@@ -18,9 +18,6 @@ int zlarot_slu(bool *lrows, bool *lleft, bool *lright,
     int i__1, i__2, i__3, i__4;
     doublecomplex z__1, z__2, z__3, z__4, z__5, z__6;
 
-    /* Builtin functions */
-    void d_cnjg(doublecomplex *, doublecomplex *);
-
     /* Local variables */
     static int iinc, j, inext;
     static doublecomplex tempx;
@@ -41,7 +38,7 @@ int zlarot_slu(bool *lrows, bool *lleft, bool *lright,
 
        ZLAROT applies a (Givens) rotation to two adjacent rows or   
        columns, where one element of the first and/or last column/row   
-       may be a separate variable.  This is specifically indended   
+       may be a separate variable.  This is specifically intended   
        for use on matrices stored in some format other than GE, so   
        that elements of the matrix may be used or modified for which   
        no array element is provided.   

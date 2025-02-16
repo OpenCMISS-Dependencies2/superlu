@@ -3,12 +3,12 @@ cmake_minimum_required(VERSION 3.12)
 
 # Project Version
 project(SuperLU C)
-set(VERSION_MAJOR "6")
+set(VERSION_MAJOR "7")
 set(VERSION_MINOR "0")
-set(VERSION_BugFix "1")
+set(VERSION_BugFix "0")
 set(PROJECT_VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_BugFix})
 
-# Compatiblitly to xSDK standard
+# Compatibility to xSDK standard
 # (Extreme-scale Scientific Software Development Kit)
 #
 #MESSAGE("\nProcess XSDK defaults ...")
@@ -41,13 +41,14 @@ endif()
 option(enable_internal_blaslib  "Build the CBLAS library" ${enable_blaslib_xSDK})
 option(enable_single    "Enable single precision library" ON)
 option(enable_double    "Enable double precision library" ON)
-option(enable_complex   "Enable complex precision library" ON)
-option(enable_complex16 "Enable complex16 precision library" ON)
+option(enable_complex   "Enable single precision complex library" ON)
+option(enable_complex16 "Enable double precision complex (complex16) library" ON)
 option(enable_matlabmex "Build the Matlab mex library" OFF)
 option(enable_doc       "Add target 'doc' to build Doxygen documentation" OFF)
 option(enable_examples  "Build examples" ON)
 option(enable_fortran   "Build Fortran interface" ${enable_fortran_xSDK})
 option(enable_tests     "Build tests" ON)
+option(enable_compatibility_complex "Provide typdef 'complex' for compatibility with older SuperLU version" OFF)
 
 include(CTest)
 include(GNUInstallDirs)
@@ -99,6 +100,11 @@ if (enable_fortran)
 endif()
 set(SUPERLU_VERSION "${PROJECT_VERSION}")
 set(SUPERLU_REV "${PROJECT_REV}")
+
+if(enable_compatibility_complex)
+  add_compile_definitions(SUPERLU_TYPEDEF_COMPLEX)
+endif()
+
 
 #-- BLAS
 option(TPL_ENABLE_INTERNAL_BLASLIB  "Build the CBLAS library" ${enable_internal_blaslib})
@@ -260,6 +266,8 @@ endif()
 
 add_subdirectory(EXAMPLE)
 
-if (enable_doc)
+# To work around CMake bug #18708 that got fixed in 3.28.0, for
+# older CMake disable finding Doxygen unless explicitly enabled
+if (enable_doc OR (CMAKE_VERSION VERSION_GREATER_EQUAL "3.28.0"))
    add_subdirectory(DOC)
 endif()

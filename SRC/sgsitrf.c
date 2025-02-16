@@ -13,9 +13,10 @@ at the top-level directory.
  * \brief Computes an ILU factorization of a general sparse matrix
  *
  * <pre>
- * -- SuperLU routine (version 4.1) --
+ * -- SuperLU routine (version 7.0.0) --
  * Lawrence Berkeley National Laboratory.
  * June 30, 2009
+ * August 2024
  *
  * </pre>
  */
@@ -197,7 +198,7 @@ sgsitrf(superlu_options_t *options, SuperMatrix *A, int relax, int panel_size,
     int       *iperm_c; /* inverse of perm_c */
     int       *swap, *iswap; /* swap is used to store the row permutation
 				during the factorization. Initially, it is set
-				to iperm_c (row indeces of Pc*A*Pc').
+				to iperm_c (row indices of Pc*A*Pc').
 				iswap is the inverse of swap. After the
 				factorization, it is equal to perm_r. */
     int       *iwork;
@@ -217,7 +218,7 @@ sgsitrf(superlu_options_t *options, SuperMatrix *A, int relax, int panel_size,
     int_t     nzlumax;
     float    *amax; 
     float    drop_sum;
-    float alpha, omega;  /* used in MILU, mimicing DRIC */
+    float alpha, omega;  /* used in MILU, mimicking DRIC */
     float    *swork2;	   /* used by the second dropping rule */
 
     /* Local scalars */
@@ -316,14 +317,14 @@ sgsitrf(superlu_options_t *options, SuperMatrix *A, int relax, int panel_size,
     else
 	ilu_relax_snode(n, etree, relax, marker, relax_end, relax_fsupc);
 
-    ifill (perm_r, m, EMPTY);
-    ifill (marker, m * NO_MARKER, EMPTY);
+    ifill (perm_r, m, SLU_EMPTY);
+    ifill (marker, m * NO_MARKER, SLU_EMPTY);
     supno[0] = -1;
     xsup[0]  = xlsub[0] = xusub[0] = xlusup[0] = 0;
     w_def    = panel_size;
 
     /* Mark the rows used by relaxed supernodes */
-    ifill (marker_relax, m, EMPTY);
+    ifill (marker_relax, m, SLU_EMPTY);
     i = mark_relax(m, relax_end, relax_fsupc, xa_begin, xa_end,
 	         asub, marker_relax);
 #if ( PRNTlevel >= 1)
@@ -337,7 +338,7 @@ sgsitrf(superlu_options_t *options, SuperMatrix *A, int relax, int panel_size,
      */
     for (jcol = 0; jcol < min_mn; ) {
 
-	if ( relax_end[jcol] != EMPTY ) { /* start of a relaxed snode */
+	if ( relax_end[jcol] != SLU_EMPTY ) { /* start of a relaxed snode */
 	    kcol = relax_end[jcol];	  /* end of the relaxed snode */
 	    panel_histo[kcol-jcol+1]++;
 
@@ -444,7 +445,7 @@ sgsitrf(superlu_options_t *options, SuperMatrix *A, int relax, int panel_size,
 	     */
 	    panel_size = w_def;
 	    for (k = jcol + 1; k < SUPERLU_MIN(jcol+panel_size, min_mn); k++)
-		if ( relax_end[k] != EMPTY ) {
+		if ( relax_end[k] != SLU_EMPTY ) {
 		    panel_size = k - jcol;
 		    break;
 		}
@@ -619,7 +620,7 @@ sgsitrf(superlu_options_t *options, SuperMatrix *A, int relax, int panel_size,
     if ( m > n ) {
 	k = 0;
 	for (i = 0; i < m; ++i)
-	    if ( perm_r[i] == EMPTY ) {
+	    if ( perm_r[i] == SLU_EMPTY ) {
 		perm_r[i] = n + k;
 		++k;
 	    }
