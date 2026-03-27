@@ -2207,7 +2207,11 @@ PRIVATE Int find_ordering	/* return the number of garbage collections */
     Int col ;			/* a column index */
     Int max_score ;		/* maximum possible score */
     Int cur_score ;		/* score of current column */
+#ifdef DLONG
+    uint64_t hash ; 	        /* hash value for supernode detection */
+#else
     unsigned Int hash ;		/* hash value for supernode detection */
+#endif
     Int head_column ;		/* head of hash bucket */
     Int first_col ;		/* first column in hash bucket */
     Int tag_mark ;		/* marker value for mark array */
@@ -2269,7 +2273,7 @@ PRIVATE Int find_ordering	/* return the number of garbage collections */
 #endif /* NDEBUG */
 
 	/* get pivot column from head of minimum degree list */
-	while (head [min_score] == COLAMD_EMPTY && min_score < n_col)
+	while (min_score < n_col && head [min_score] == COLAMD_EMPTY)
 	{
 	    min_score++ ;
 	}
